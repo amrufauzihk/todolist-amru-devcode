@@ -4,35 +4,28 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import Select from "react-select";
-import { Creators as TodoActions } from "../../redux/TodoRedux";
+import { Creators as TodoActions } from "../../../redux/TodoRedux";
 
-function ModalEditItem({ show, handleClose, title, text, editedItem }) {
+const ModalAddItem = ({ show, handleClose }) => {
   const params = useParams().todoId;
   const dispatch = useDispatch();
+  const addItem = (data) => dispatch(TodoActions.addItemRequest(data));
   const resetState = () => dispatch(TodoActions.resetStateTodo());
-  const updateItem = (data) => dispatch(TodoActions.updateItemRequest(data));
-  const getActivityDetail = (data) =>
-  dispatch(TodoActions.getActivityDetailRequest(data));
 
-  const { isLoadingUpdateItem, errUpdateItem, dataUpdateItem } = useSelector(
+  const { isLoadingAddItem, errAddItem, dataAddItem } = useSelector(
     (state) => state.todo
   );
 
   const [itemName, setItemName] = useState("");
   const [priority, setPriority] = useState("very-high");
-  const [selectState, setSelectState] = useState({})
 
   useEffect(() => {
-    if (errUpdateItem !== null) {
-      handleClose();
-      resetState();
-    } else if (dataUpdateItem && show) {
-      getActivityDetail(params)
+    if (errAddItem !== null || dataAddItem) {
       handleClose();
       resetState();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errUpdateItem, dataUpdateItem]);
+  }, [errAddItem, dataAddItem]);
 
   const options = [
     {
@@ -57,17 +50,11 @@ function ModalEditItem({ show, handleClose, title, text, editedItem }) {
     },
   ];
 
-  useEffect(() => {
-    if (editedItem) {
-      setItemName(editedItem.title)
-      setPriority(editedItem.priority)
-      setSelectState(options.find(option => option.value === editedItem.priority))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show])
-
   const formatOptionLabel = ({ value, label }) => (
-    <div className="d-flex align-items-center">
+    <div
+      data-cy="modal-add-priority-item"
+      className="d-flex align-items-center"
+    >
       <div className={`label-indicator ${value}`}></div>
       <div>{label}</div>
     </div>
@@ -76,19 +63,18 @@ function ModalEditItem({ show, handleClose, title, text, editedItem }) {
   const submitAdd = () => {
     const data = {
       title: itemName,
+      activity_group_id: params,
       priority,
-      is_active: editedItem.is_active
-    }
-    updateItem({data, id: editedItem.id});
+    };
+    addItem(data);
   };
 
-  const handleChangeSelect = (e) => {
-    setSelectState(e)
-    setPriority(e.value)
-  }
+  const DropdownIndicator = () => {
+    return <div data-cy="modal-add-priority-dropdown" className="icon-dropdown mr-2"></div>;
+  };
 
   return (
-    <div>
+    <div data-cy="modal-add">
       <Modal
         show={show}
         onHide={handleClose}
@@ -96,32 +82,40 @@ function ModalEditItem({ show, handleClose, title, text, editedItem }) {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        id="ModalUpdate"
       >
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter" className="pt-4">
-            <h4 className="font-weight-bold">Edit Item</h4>
-            <div className="icon-close" onClick={handleClose}></div>
+            <h4 className="font-weight-bold" data-cy="modal-add-title">
+              Tambah List Item
+            </h4>
+            <div
+              className="icon-close"
+              onClick={handleClose}
+              data-cy="modal-add-close-button"
+            ></div>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <label>NAMA LIST ITEM</label>
-            <Form.Control
-              onChange={(e) => setItemName(e.target.value)}
-              placeholder="Tambahkan nama Activity"
-              value={itemName}
-            />
-            <label>PRIORITY</label>
+            <label data-cy="modal-add-name-title">NAMA LIST ITEM</label>
+            <div data-cy="modal-add-name-input">
+              <Form.Control
+                onChange={(e) => setItemName(e.target.value)}
+                placeholder="Tambahkan nama Activity"
+                id="AddFormTitle"
+              />
+            </div>
+            <label data-cy="modal-add-priority-title">PRIORITY</label>
             <br />
             <Select
               defaultValue={options[0]}
               formatOptionLabel={formatOptionLabel}
               options={options}
               className="select-priority"
-              onChange={(e) => handleChangeSelect(e)}
-              value={selectState}
-              id="UpdateFormPriority"
+              onChange={(e) => setPriority(e.value)}
+              id="AddFormPriority"
+              onMouseOver={() => console.log("lagi di atas awan")}
+              components={{ DropdownIndicator }}
             />
           </Form.Group>
         </Modal.Body>
@@ -130,9 +124,10 @@ function ModalEditItem({ show, handleClose, title, text, editedItem }) {
             className="btn btn-primary"
             onClick={submitAdd}
             disabled={itemName === ""}
-            id="UpdateFormSubmit"
+            id="AddFormSubmit"
+            data-cy="modal-add-save-button"
           >
-            {isLoadingUpdateItem ? (
+            {isLoadingAddItem ? (
               <Spinner
                 as="span"
                 animation="border"
@@ -150,4 +145,4 @@ function ModalEditItem({ show, handleClose, title, text, editedItem }) {
   );
 }
 
-export default ModalEditItem;
+export default ModalAddItem;

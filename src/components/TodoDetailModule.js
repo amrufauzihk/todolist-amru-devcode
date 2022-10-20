@@ -3,15 +3,15 @@ import { Dropdown, Form, Spinner } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import Immutable from "seamless-immutable";
-import deleteIcon from "../../assets/images/icon-delete.svg";
-import emptyItem from "../../assets/images/empty-item.png";
-import { Creators as TodoActions } from "../../redux/TodoRedux";
-import ModalAddItem from "../Modals/ModalAddItem";
-import ModalToast from "../Modals/ModalToast";
-import ModalDelete from "../Modals/ModalDelete";
-import ModalEditItem from "../Modals/ModalEditItem";
+import deleteIcon from "../assets/images/icon-delete.svg";
+import emptyItem from "../assets/images/empty-item.png";
+import { Creators as TodoActions } from "../redux/TodoRedux";
+import ModalAddItem from "./Common/Modals/ModalAddItem";
+import ModalToast from "./Common/Modals/ModalToast";
+import ModalDelete from "./Common/Modals/ModalDelete";
+import ModalEditItem from "./Common/Modals/ModalEditItem";
 
-function TodoDetailModule() {
+const TodoDetailModule = () => {
   const params = useParams().todoId;
   const history = useHistory();
   const titleInput = useRef(null);
@@ -33,19 +33,19 @@ function TodoDetailModule() {
     errUpdateItem,
     dataUpdateItem,
   } = useSelector((state) => state.todo);
-
-  const [isEditTitle, setIsEditTitle] = useState(false);
-  const [titleState, setTitleState] = useState("");
+  
+  const [listItems, setListItems] = useState([]);
+  const [activeDropdown, setActiveDropdown] = useState(1);
+  const [showEditItem, setShowEditItem] = useState(false);
   const [showAddItem, setShowAddItem] = useState(false);
+  const [isEditTitle, setIsEditTitle] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState("success");
   const [modalText, setModalText] = useState("");
-  const [listItems, setListItems] = useState([]);
-  const [showDelete, setShowDelete] = useState(false);
-  const [deletedItem, setDeletedItem] = useState("");
-  const [showEditItem, setShowEditItem] = useState(false);
+  const [titleState, setTitleState] = useState("");
   const [editedItem, setEditedItem] = useState("");
-  const [activeDropdown, setActiveDropdown] = useState(1);
+  const [deletedItem, setDeletedItem] = useState("");
 
   useEffect(() => {
     if (dataGetActivityDetail) {

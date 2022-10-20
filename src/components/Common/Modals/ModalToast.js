@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 
-function ModalToast({ show, handleClose, title, text, type }) {
+const ModalToast = ({ show, handleClose, text, type }) => {
   return (
     <div data-cy="modal-information">
       <Modal

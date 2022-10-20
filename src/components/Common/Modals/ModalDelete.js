@@ -2,17 +2,17 @@ import React, { useEffect } from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import alertIcon from "../../assets/images/icon-alert.svg";
-import { Creators as TodoActions } from "../../redux/TodoRedux";
+import alertIcon from "../../../assets/images/icon-alert.svg";
+import { Creators as TodoActions } from "../../../redux/TodoRedux";
 
-function ModalDelete({
+const ModalDelete = ({
   show,
   handleClose,
   title,
   text,
   deletedItem,
   handleDelete,
-}) {
+}) => {
   const dispatch = useDispatch();
   const deleteActivity = (data) =>
     dispatch(TodoActions.deleteActivityRequest(data));

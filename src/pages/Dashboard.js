@@ -3,14 +3,14 @@ import { useDispatch } from "react-redux";
 import { titlePage } from "../lib/titleHead";
 import { Creators as TodoActions } from "../redux/TodoRedux";
 const DashboardModule = lazy(() =>
-  import("../components/Dashboard/DashboardModule")
+  import("../components/DashboardModule")
 );
 const Header = lazy(() =>
   import("../components/Common/Header")
 );
 
 
-function Dashboard() {
+const Dashboard = () => {
   const dispatch = useDispatch();
   const getActivities = () => dispatch(TodoActions.getActivitiesRequest());
   useEffect(() => {

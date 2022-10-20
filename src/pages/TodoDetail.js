@@ -4,13 +4,13 @@ import { useParams } from "react-router";
 import { titlePage } from "../lib/titleHead";
 import { Creators as TodoActions } from "../redux/TodoRedux";
 const TodoDetailModule = lazy(() =>
-  import("../components/TodoDetail/TodoDetailModule")
+  import("../components/TodoDetailModule")
 );
 const Header = lazy(() =>
   import("../components/Common/Header")
 );
 
-function TodoDetail() {
+const TodoDetail = () => {
   const params = useParams().todoId
   const dispatch = useDispatch()
   const getTodoDetail = (data) => dispatch(TodoActions.getActivityDetailRequest(data))

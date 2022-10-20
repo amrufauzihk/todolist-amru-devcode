@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import deleteIcon from "../../assets/images/icon-delete.svg";
-import ModalDelete from "../Modals/ModalDelete";
+import deleteIcon from "../assets/images/icon-delete.svg";
+import ModalDelete from "./Common/Modals/ModalDelete";
 import "dayjs/locale/id";
-import ModalToast from "../Modals/ModalToast";
-import { Creators as TodoActions } from "../../redux/TodoRedux";
-import emptyItem from "../../assets/images/empty-activity.png"
+import ModalToast from "./Common/Modals/ModalToast";
+import { Creators as TodoActions } from "../redux/TodoRedux";
+import emptyItem from "../assets/images/empty-activity.png"
 
 const DashboardModule = () => {
   const history = useHistory();
