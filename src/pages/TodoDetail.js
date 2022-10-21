@@ -11,9 +11,9 @@ const Header = lazy(() =>
 );
 
 const TodoDetail = () => {
-  const params = useParams().todoId
-  const dispatch = useDispatch()
-  const getTodoDetail = (data) => dispatch(TodoActions.getActivityDetailRequest(data))
+  const params = useParams().todoId;
+  const dispatch = useDispatch();
+  const getTodoDetail = (data) => dispatch(TodoActions.getActivityDetailRequest(data));
   useEffect(() => {
     titlePage({
       title: "To Do List - Detail",
